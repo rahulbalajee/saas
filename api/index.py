@@ -1,13 +1,28 @@
-from fastapi import FastAPI
+import os
+
+from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, StreamingResponse
 from openai import OpenAI
+from fastapi_clerk_auth import ClerkConfig, ClerkHTTPBearer, HTTPAuthorizationCredentials
 
 app = FastAPI()
 
 client = OpenAI()
 
+clerk_config = ClerkConfig(
+    jwks_url=os.getenv("CLERK_JWKS_URL"),
+)
+clerk_guard = ClerkHTTPBearer(config=clerk_config)
+
 @app.get("/api")
-def idea():
+def idea(credentials: HTTPAuthorizationCredentials = Depends(clerk_guard)):
+    user_id = credentials.decoded["sub"]
+    # We now know which user is making the request! 
+    # You could use user_id to:
+    # - Track usage per user
+    # - Store generated ideas in a database
+    # - Apply user-specific limits or customization
+    
     try:
         prompt = [{
             "role": "user",
