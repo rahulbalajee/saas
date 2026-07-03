@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="description" content="Generate a new business idea for a SaaS product." />
+        <meta name="description" content="AI-powered medical consultation summaries" />
       </Head>
       <body className="antialiased">
         <Main />

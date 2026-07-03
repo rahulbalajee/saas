@@ -2,25 +2,32 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+  PricingTable,
+  Protect,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const features = [
   {
-    title: "AI-Powered Ideas",
+    title: "Instant Summaries",
     description:
-      "Generate fresh, market-ready business concepts built for the AI agent economy in seconds.",
-    icon: "✨",
+      "Turn raw visit notes into a clear summary for your records in seconds.",
+    icon: "📝",
   },
   {
-    title: "Structured Output",
+    title: "Next Steps & Patient Email",
     description:
-      "Every idea arrives formatted with headings, sub-headings, and bullet points you can act on.",
-    icon: "📋",
+      "Get suggested next steps plus a draft email in patient-friendly language, ready to send.",
+    icon: "✉️",
   },
   {
     title: "Real-Time Streaming",
     description:
-      "Watch your idea appear token-by-token as the model thinks — no waiting for a full response.",
+      "Watch the summary appear token-by-token as the model works — no waiting for a full response.",
     icon: "⚡",
   },
 ];
@@ -29,10 +36,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>IdeaGen — AI Business Idea Generator</title>
+        <title>MediSummary — AI Consultation Summaries</title>
         <meta
           name="description"
-          content="Harness AI to discover innovative business opportunities tailored for the AI agent economy."
+          content="Turn doctor's visit notes into a summary, next steps, and a patient-friendly email with AI."
         />
       </Head>
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -40,9 +47,15 @@ export default function Home() {
           {/* Navigation */}
           <nav className="mb-12 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-              IdeaGen
+              MediSummary
             </h1>
-            <div>
+            <div className="flex items-center gap-6">
+              <a
+                href="#pricing"
+                className="hidden text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 sm:block dark:text-gray-400 dark:hover:text-gray-100"
+              >
+                Pricing
+              </a>
               <SignedOut>
                 <SignInButton mode="modal">
                   <button className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition-colors hover:bg-blue-700">
@@ -67,19 +80,19 @@ export default function Home() {
           {/* Hero Section */}
           <div className="py-24 text-center">
             <h2 className="mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-6xl font-bold text-transparent">
-              Generate Your Next
+              Turn Visit Notes Into
               <br />
-              Big Business Idea
+              Polished Summaries
             </h2>
             <p className="mx-auto mb-12 max-w-2xl text-xl text-gray-600 dark:text-gray-400">
-              Harness the power of AI to discover innovative business
-              opportunities tailored for the AI agent economy
+              Let AI turn your consultation notes into a clean summary, clear
+              next steps, and a patient-friendly email — in seconds.
             </p>
 
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="transform rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 text-lg font-bold text-white transition-all hover:scale-105 hover:from-blue-700 hover:to-indigo-700">
-                  Get Started Free
+                  Get Started
                 </button>
               </SignInButton>
             </SignedOut>
@@ -88,10 +101,48 @@ export default function Home() {
                 href="/product"
                 className="inline-block transform rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 text-lg font-bold text-white transition-all hover:scale-105 hover:from-blue-700 hover:to-indigo-700"
               >
-                Generate Ideas Now
+                Generate a Summary
               </Link>
             </SignedIn>
           </div>
+
+          {/* Pricing Section */}
+          <section id="pricing" className="scroll-mt-24 py-16">
+            <div className="mb-10 text-center">
+              <h2 className="mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent">
+                Simple, transparent pricing
+              </h2>
+              <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+                Go Premium to unlock unlimited AI-powered consultation
+                summaries.
+              </p>
+            </div>
+            <Protect
+              plan="premium_subscription"
+              fallback={
+                <div className="mx-auto max-w-md">
+                  <PricingTable />
+                </div>
+              }
+            >
+              <div className="mx-auto max-w-md rounded-2xl bg-white/70 p-8 text-center shadow-lg backdrop-blur-lg dark:bg-gray-800/70">
+                <div className="mb-4 text-4xl">🎉</div>
+                <h3 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-gray-100">
+                  You&apos;re on Premium
+                </h3>
+                <p className="mb-6 text-gray-600 dark:text-gray-400">
+                  Your subscription is active — enjoy unlimited AI-powered
+                  consultation summaries.
+                </p>
+                <Link
+                  href="/product"
+                  className="inline-block transform rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 text-lg font-bold text-white transition-all hover:scale-105 hover:from-blue-700 hover:to-indigo-700"
+                >
+                  Access Premium Features
+                </Link>
+              </div>
+            </Protect>
+          </section>
 
           {/* Features Section */}
           <section className="grid gap-8 py-12 md:grid-cols-3">
@@ -113,7 +164,7 @@ export default function Home() {
 
           {/* Footer */}
           <footer className="mt-12 border-t border-gray-200/60 py-8 text-center text-sm text-gray-500 dark:border-gray-700/60 dark:text-gray-400">
-            © {new Date().getFullYear()} IdeaGen. Powered by AI.
+            © {new Date().getFullYear()} MediSummary. Powered by AI.
           </footer>
         </div>
       </main>
