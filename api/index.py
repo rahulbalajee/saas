@@ -51,16 +51,13 @@ def user_prompt_for(visit: Visit) -> str:
     """
 
 @app.post("/api")
-def consultation_summary(
-    visit: Visit, 
-    credentials: HTTPAuthorizationCredentials = Depends(clerk_guard),
-    ):
+def consultation_summary(visit: Visit, credentials: HTTPAuthorizationCredentials = Depends(clerk_guard)):
 
     user_id = credentials.decoded["sub"]
 
     if not user_id:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    
+
     # TODO:
     # - Check user permissions
     # - Apply per-user rate limits
@@ -68,19 +65,18 @@ def consultation_summary(
     # - Store audit event if required
 
     try:
-        prompt = [
-            {
-                "role": "system",
-                "content": system_prompt
-            },
-            {
-                "role": "user",
-                "content": user_prompt_for(visit)
-            }
-        ]
         stream = client.chat.completions.create(
             model="gpt-5-nano",
-            messages=prompt,
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt_for(visit)
+                }
+            ],
             stream=True,
             reasoning_effort="minimal",
         )
