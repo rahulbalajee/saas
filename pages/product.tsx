@@ -46,7 +46,7 @@ function ConsultationSummary() {
                 return;
             }
 
-            await fetchEventSource("/api", {
+            await fetchEventSource("/api/consultation", {
                 signal: controller.signal,
                 method: "POST",
                 headers: {
